@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <filter id="dropGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="620" rx="16" fill="url(#bgGrad)"/>
+  <rect x="2" y="2" width="996" height="616" rx="14" fill="none" stroke="#334155" stroke-width="2"/>
+
+  <!-- Title -->
+  <text x="50" y="50" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="700" fill="#f8fafc">
+    Real-Time Vibration Spectral Analyzer &amp; Edge DSP Architecture
+  </text>
+  <text x="50" y="75" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="500" fill="#94a3b8">
+    Target: STM32F446RE (ARM Cortex-M4 @ 180 MHz + FPU) | 50 kHz TIM2 TRGO | DMA2 Ping-Pong | 1024-Point RFFT
+  </text>
+
+  <!-- ========================================================================= -->
+  <!-- COLUMN 1: Hardware Acquisition (Left) -->
+  <!-- ========================================================================= -->
+  <g transform="translate(50, 110)" filter="url(#dropGlow)">
+    <rect width="260" height="460" rx="12" fill="url(#cardGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="0" y="0" width="260" height="40" rx="12" fill="#0284c7" opacity="0.2"/>
+    <text x="20" y="26" font-family="sans-serif" font-size="14" font-weight="700" fill="#38bdf8">HARDWARE ACQUISITION</text>
+
+    <!-- Accelerometer In -->
+    <rect x="15" y="55" width="230" height="85" rx="8" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="78" font-family="sans-serif" font-size="12" font-weight="700" fill="#e2e8f0">Vibration Accelerometer</text>
+    <text x="25" y="98" font-family="sans-serif" font-size="11" fill="#94a3b8">• Piezo / IEPE Analog Signal</text>
+    <text x="25" y="115" font-family="sans-serif" font-size="11" fill="#94a3b8">• Bandwidth: 0 Hz - 25 kHz</text>
+    <text x="25" y="130" font-family="sans-serif" font-size="11" fill="#94a3b8">• Input Pin: PA0 (ADC1_IN0)</text>
+
+    <!-- Timer TRGO -->
+    <rect x="15" y="150" width="230" height="85" rx="8" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="173" font-family="sans-serif" font-size="12" font-weight="700" fill="#e2e8f0">TIM2 TRGO Master Trigger</text>
+    <text x="25" y="193" font-family="sans-serif" font-size="11" fill="#94a3b8">• Hardware Trigger @ 50 kHz</text>
+    <text x="25" y="210" font-family="sans-serif" font-size="11" fill="#94a3b8">• Zero Software Jitter</text>
+    <text x="25" y="225" font-family="sans-serif" font-size="11" fill="#94a3b8">• APB1 Clock: 90 MHz / Prescaled</text>
+
+    <!-- ADC1 -->
+    <rect x="15" y="245" width="230" height="85" rx="8" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="268" font-family="sans-serif" font-size="12" font-weight="700" fill="#e2e8f0">ADC1 12-Bit Peripheral</text>
+    <text x="25" y="288" font-family="sans-serif" font-size="11" fill="#94a3b8">• Resolution: 4096 Counts</text>
+    <text x="25" y="305" font-family="sans-serif" font-size="11" fill="#94a3b8">• Conversion Time: < 0.84 µs</text>
+    <text x="25" y="320" font-family="sans-serif" font-size="11" fill="#94a3b8">• Direct DMA Request Generation</text>
+
+    <!-- DAC Self Test -->
+    <rect x="15" y="340" width="230" height="100" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="25" y="363" font-family="sans-serif" font-size="12" font-weight="700" fill="#38bdf8">DAC1 Built-In Loopback</text>
+    <text x="25" y="385" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Synthesizes 1.465 kHz Carrier</text>
+    <text x="25" y="405" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Injects 4.395 kHz Bearing Harmonic</text>
+    <text x="25" y="425" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Zero external bench tools needed</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- COLUMN 2: DMA Ping-Pong & FPU DSP Pipeline (Center) -->
+  <!-- ========================================================================= -->
+  <g transform="translate(340, 110)" filter="url(#dropGlow)">
+    <rect width="320" height="460" rx="12" fill="url(#cardGrad)" stroke="#818cf8" stroke-width="1.5"/>
+    <rect x="0" y="0" width="320" height="40" rx="12" fill="#4f46e5" opacity="0.2"/>
+    <text x="20" y="26" font-family="sans-serif" font-size="14" font-weight="700" fill="#818cf8">ZERO-CPU DMA &amp; DSP CORE</text>
+
+    <!-- Double Buffer -->
+    <rect x="15" y="55" width="290" height="135" rx="8" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="78" font-family="sans-serif" font-size="12" font-weight="700" fill="#e2e8f0">DMA2 Stream 0 Double-Buffer (DBM)</text>
+    <rect x="25" y="90" width="125" height="40" rx="6" fill="#0f172a" stroke="#38bdf8"/>
+    <text x="35" y="108" font-family="monospace" font-size="11" fill="#38bdf8">Buffer 0 (1024B)</text>
+    <text x="35" y="122" font-family="sans-serif" font-size="9" fill="#94a3b8">Active ADC Target</text>
+
+    <rect x="160" y="90" width="125" height="40" rx="6" fill="#0f172a" stroke="#34d399"/>
+    <text x="170" y="108" font-family="monospace" font-size="11" fill="#34d399">Buffer 1 (1024B)</text>
+    <text x="170" y="122" font-family="sans-serif" font-size="9" fill="#94a3b8">Ready for DSP Core</text>
+
+    <text x="25" y="152" font-family="sans-serif" font-size="11" fill="#94a3b8">• Silicon hardware flips buffer pointer at N=1024</text>
+    <text x="25" y="170" font-family="sans-serif" font-size="11" fill="#94a3b8">• Zero CPU interruption during ADC conversion</text>
+
+    <!-- Cortex-M4 FPU Block -->
+    <rect x="15" y="200" width="290" height="120" rx="8" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="223" font-family="sans-serif" font-size="12" font-weight="700" fill="#e2e8f0">ARM Cortex-M4 Hardware FPU Core</text>
+    <text x="25" y="243" font-family="monospace" font-size="11" fill="#818cf8">1. DC Bias Removal (Mean Subtraction)</text>
+    <text x="25" y="263" font-family="monospace" font-size="11" fill="#818cf8">2. Raised-Cosine Hanning Windowing</text>
+    <text x="25" y="283" font-family="monospace" font-size="11" fill="#818cf8">3. Radix-2 Real FFT (1024 Samples)</text>
+    <text x="25" y="303" font-family="monospace" font-size="11" fill="#818cf8">4. Magnitude Spectrum |X[k]| Calculation</text>
+
+    <!-- Spectral Bins -->
+    <rect x="15" y="330" width="290" height="110" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="25" y="353" font-family="sans-serif" font-size="12" font-weight="700" fill="#a855f7">Spectral Resolution Specs</text>
+    <text x="25" y="375" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Sampling Rate: 50,000 Hz</text>
+    <text x="25" y="395" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Bin Resolution (df): 48.828 Hz per bin</text>
+    <text x="25" y="415" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Execution Time: < 1.1 ms on 180 MHz core</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- COLUMN 3: Diagnostics & ISO 10816 Health (Right) -->
+  <!-- ========================================================================= -->
+  <g transform="translate(690, 110)" filter="url(#dropGlow)">
+    <rect width="260" height="460" rx="12" fill="url(#cardGrad)" stroke="#34d399" stroke-width="1.5"/>
+    <rect x="0" y="0" width="260" height="40" rx="12" fill="#059669" opacity="0.2"/>
+    <text x="20" y="26" font-family="sans-serif" font-size="14" font-weight="700" fill="#34d399">CONDITION MONITORING</text>
+
+    <!-- Feature Extraction -->
+    <rect x="15" y="55" width="230" height="155" rx="8" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="78" font-family="sans-serif" font-size="12" font-weight="700" fill="#e2e8f0">Extracted Vibration Metrics</text>
+    <text x="25" y="98" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Fundamental Shaft Speed (f_0)</text>
+    <text x="25" y="118" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Top 5 Harmonic Peaks Tracking</text>
+    <text x="25" y="138" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Total Harmonic Distortion (THD %)</text>
+    <text x="25" y="158" font-family="sans-serif" font-size="11" fill="#cbd5e1">• True Signal RMS Amplitude</text>
+    <text x="25" y="178" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Crest Factor (Peak / RMS Ratio)</text>
+    <text x="25" y="198" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Peak-to-Peak Displacement</text>
+
+    <!-- ISO 10816 -->
+    <rect x="15" y="220" width="230" height="120" rx="8" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="243" font-family="sans-serif" font-size="12" font-weight="700" fill="#e2e8f0">ISO 10816-3 Severity Engine</text>
+    <text x="25" y="263" font-family="sans-serif" font-size="11" fill="#34d399">Zone A: Good (< 1.4 mm/s)</text>
+    <text x="25" y="283" font-family="sans-serif" font-size="11" fill="#38bdf8">Zone B: Satisfactory (< 2.8 mm/s)</text>
+    <text x="25" y="303" font-family="sans-serif" font-size="11" fill="#f59e0b">Zone C: Unsatisfactory (< 4.5 mm/s)</text>
+    <text x="25" y="323" font-family="sans-serif" font-size="11" fill="#ef4444">Zone D: Unacceptable (>= 4.5 mm/s)</text>
+
+    <!-- Output Telemetry -->
+    <rect x="15" y="350" width="230" height="90" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="25" y="373" font-family="sans-serif" font-size="12" font-weight="700" fill="#f59e0b">Live Telemetry &amp; Reporting</text>
+    <text x="25" y="393" font-family="sans-serif" font-size="11" fill="#cbd5e1">• USART2 VCP (115200 Baud)</text>
+    <text x="25" y="410" font-family="sans-serif" font-size="11" fill="#cbd5e1">• ASCII Waterfall Frequency Spectrum</text>
+    <text x="25" y="427" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Python CLI Companion Monitor</text>
+  </g>
+
+  <!-- Connective Arrows -->
+  <g stroke="#38bdf8" stroke-width="2" fill="none">
+    <path d="M 310 280 L 340 280"/>
+  </g>
+  <g stroke="#818cf8" stroke-width="2" fill="none">
+    <path d="M 660 280 L 690 280"/>
+  </g>
+
+  <!-- Footer Banner -->
+  <rect x="50" y="585" width="900" height="25" rx="6" fill="#0f172a"/>
+  <text x="60" y="602" font-family="sans-serif" font-size="11" font-weight="600" fill="#64748b">
+    SYSTEM HIGHLIGHT: Hardware FPU | Precomputed Twiddle &amp; Hanning Tables | 0% CPU Sampling Overhead | ISO 10816 Condition Monitoring
+  </text>
+</svg>
