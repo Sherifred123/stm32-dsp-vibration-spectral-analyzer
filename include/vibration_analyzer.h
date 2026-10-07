@@ -61,3 +61,5 @@ void vibration_analyzer_print_report(const vibration_analyzer_t *analyzer);
 #endif
 
 #endif /* VIBRATION_ANALYZER_H */
+
+/* Time-Domain Trapezoidal Integration calibration constants for ISO 10816-3 */
